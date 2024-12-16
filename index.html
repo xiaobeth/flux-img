@@ -130,21 +130,45 @@
         }
 
         .prompt-header {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
             text-align: center;
         }
 
+        .title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
         .prompt-title {
-            font-size: 2em;
-            margin-bottom: 0.5rem;
-            background: var(--accent-gradient);
+            font-size: 2.8em;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #00f7ff, #0066ff, #00ffbb);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+        }
+
+        .title-badge {
+            background: linear-gradient(135deg, #ff00e5, #7000ff);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(112, 0, 255, 0.3);
         }
 
         .prompt-subtitle {
             color: var(--text-secondary);
-            font-size: 1.1em;
+            font-size: 1.2em;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            opacity: 0.8;
         }
 
         .prompt-container {
@@ -153,17 +177,20 @@
         }
 
         .prompt-wrapper {
-            background: var(--darker-bg);
+            background: rgba(7, 8, 9, 0.6);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 1rem;
+            padding: 1.5rem;
             margin-bottom: 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .prompt-wrapper:focus-within {
             border-color: var(--primary-color);
-            box-shadow: 0 0 15px rgba(0, 247, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.15);
+            transform: translateY(-2px);
         }
 
         .prompt-input {
@@ -176,10 +203,11 @@
             line-height: 1.6;
             resize: vertical;
             min-height: 120px;
+            font-family: inherit;
         }
 
-        .prompt-input:focus {
-            outline: none;
+        .prompt-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
         .prompt-tools {
@@ -590,6 +618,39 @@
                 transform: none;
             }
         }
+
+        .option-label {
+            text-transform: uppercase;
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #00f7ff, #0066ff);
+            border: none;
+            padding: 1.2rem;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 247, 255, 0.4);
+            background: linear-gradient(135deg, #00f7ff, #0066ff, #00ffbb);
+        }
+
+        .btn-icon {
+            font-size: 1.3em;
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -610,19 +671,22 @@
         <div class="container">
             <section class="prompt-section">
                 <div class="prompt-header">
-                    <h2 class="prompt-title">AI图像生成</h2>
-                    <p class="prompt-subtitle">详细描述您想要创建的图像场景</p>
+                    <div class="title-wrapper">
+                        <h2 class="prompt-title">AI Image Generator</h2>
+                        <span class="title-badge">Beta</span>
+                    </div>
+                    <p class="prompt-subtitle">Create stunning images with detailed prompts</p>
                 </div>
                 <div class="prompt-container">
                     <div class="prompt-wrapper">
-                        <textarea class="prompt-input" rows="4" placeholder="例如：一只戴着太空头盔的猫咪在月球表面漫步，背景是璀璨的星空和地球..."></textarea>
+                        <textarea class="prompt-input" rows="4" placeholder="Example: A cat wearing a space helmet walking on the moon's surface, with a stunning view of Earth and stars in the background..."></textarea>
                         <div class="prompt-tools">
-                            <div class="word-count">0/500</div>
+                            <div class="word-count">0/500 characters</div>
                             <div class="prompt-actions">
-                                <button class="tool-btn" title="清空内容">
+                                <button class="tool-btn" title="Clear">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                                <button class="tool-btn" title="插入模板">
+                                <button class="tool-btn" title="Templates">
                                     <i class="fas fa-lightbulb"></i>
                                 </button>
                             </div>
@@ -630,7 +694,7 @@
                     </div>
                     <div class="generate-options">
                         <div class="option-group">
-                            <label class="option-label">图像尺寸</label>
+                            <label class="option-label">Image Size</label>
                             <select class="option-select">
                                 <option value="512">512 x 512</option>
                                 <option value="1024">1024 x 1024</option>
@@ -638,17 +702,17 @@
                             </select>
                         </div>
                         <div class="option-group">
-                            <label class="option-label">生成数量</label>
+                            <label class="option-label">Number of Images</label>
                             <select class="option-select">
-                                <option value="1">1张</option>
-                                <option value="4">4张</option>
-                                <option value="9">9张</option>
+                                <option value="1">1 Image</option>
+                                <option value="4">4 Images</option>
+                                <option value="9">9 Images</option>
                             </select>
                         </div>
                     </div>
                     <button class="generate-btn">
                         <span class="btn-icon">✨</span>
-                        <span class="btn-text">开始生成</span>
+                        <span class="btn-text">Generate</span>
                     </button>
                 </div>
             </section>
@@ -769,7 +833,7 @@
                         <span class="toggle-icon">+</span>
                     </div>
                     <div class="faq-answer">
-                        是的，我们的服务生成的图片支持商业使���。但建议您仔细阅读我们的使用条款，了解具体的使用规范和限制。
+                        是的，我们的服务生成的图片支持商业使用。但建议您仔细阅读我们的使用条款，了解���体的使用规范和限制。
                     </div>
                 </div>
                 <div class="faq-item">
